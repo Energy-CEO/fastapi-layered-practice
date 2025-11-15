@@ -13,7 +13,7 @@ class AnonymousBoardRepositoryImpl(AnonymousBoardRepository):
         return cls.__instance
 
     @classmethod
-    def getInstance(cls):
+    def get_instance(cls):
         if cls.__instance is None:
             cls.__instance = cls()
 

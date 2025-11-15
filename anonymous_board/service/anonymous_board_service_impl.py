@@ -10,12 +10,12 @@ class AnonymousBoardServiceImpl(AnonymousBoardService):
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
-            cls.__instance.anonymous_board_repository = AnonymousBoardRepositoryImpl.getInstance()
+            cls.__instance.anonymous_board_repository = AnonymousBoardRepositoryImpl.get_instance()
 
         return cls.__instance
 
     @classmethod
-    def getInstance(cls):
+    def get_instance(cls):
         if cls.__instance is None:
             cls.__instance = cls()
 
