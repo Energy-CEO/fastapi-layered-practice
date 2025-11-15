@@ -12,4 +12,4 @@ class AnonymousBoard(Base):
                 default=lambda : str(uuid.uuid4()))
     title = Column(String(255), nullable=False)
     content = Column(String(1000), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now())

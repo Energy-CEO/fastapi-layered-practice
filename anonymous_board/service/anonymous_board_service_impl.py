@@ -36,4 +36,7 @@ class AnonymousBoardServiceImpl(AnonymousBoardService):
     # 일종의 경고가 필요함.
 
     def create(self, title: str, content: str):
-        return self.__instance.anonymous_board_repository.create(title=title, content=content)
+        return self.anonymous_board_repository.create(title=title, content=content)
+
+    def list(self):
+        return self.anonymous_board_repository.find_all()
