@@ -13,3 +13,7 @@ class AnonymousBoardRepository(ABC):
     @abstractmethod
     def find_all(self) -> List[AnonymousBoard]:
         pass
+
+    @abstractmethod
+    def read_by_id(self, board_uuid: str):
+        pass

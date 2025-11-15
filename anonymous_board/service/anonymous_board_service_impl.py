@@ -40,3 +40,9 @@ class AnonymousBoardServiceImpl(AnonymousBoardService):
 
     def list(self):
         return self.anonymous_board_repository.find_all()
+
+    def read(self, board_id: str):
+        read_board = self.anonymous_board_repository.read_by_id(board_id)
+        if not read_board:
+            raise ValueError("anonymous board service - Not found board")
+        return read_board

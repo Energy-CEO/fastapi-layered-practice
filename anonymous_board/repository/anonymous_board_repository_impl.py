@@ -40,8 +40,15 @@ class AnonymousBoardRepositoryImpl(AnonymousBoardRepository):
     def find_all(self) -> List[AnonymousBoard]:
         db = SessionLocal()
         try:
-            return (db.query(AnonymousBoard).
-                    order_by(AnonymousBoard.created_at.desc()).all())
+            return db.query(AnonymousBoard).order_by(AnonymousBoard.created_at.desc()).all()
+
+        finally:
+            db.close()
+
+    def read_by_id(self, board_uuid: str):
+        db = SessionLocal()
+        try:
+            return db.query(AnonymousBoard).filter(AnonymousBoard.id == board_uuid).first()
 
         finally:
             db.close()

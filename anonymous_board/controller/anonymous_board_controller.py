@@ -3,7 +3,7 @@
 # FastAPI 의 경우 API Router가 Controller 역할 수행
 from typing import List
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from anonymous_board.controller.request.create_anonymous_board_request import CreateAnonymousBoardRequest
 from anonymous_board.controller.response.anonymous_board_response import AnonymousBoardResponse
@@ -45,3 +45,19 @@ def list_anonymous_boards():
             created_at=anonymous_board.created_at.isoformat()
         ) for anonymous_board in board_list
     ]
+
+@anonymous_board_controller.get("/{board_id}",
+                                response_model=AnonymousBoardResponse)
+def get_anonymous_board(board_id: str):
+    try:
+        anonymous_board = board_service.read(board_id)
+
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Board not found")
+
+    return AnonymousBoardResponse(
+        id=anonymous_board.id,
+        title=anonymous_board.title,
+        content=anonymous_board.content,
+        created_at=anonymous_board.created_at.isoformat()
+    )

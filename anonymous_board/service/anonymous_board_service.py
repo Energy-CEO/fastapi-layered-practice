@@ -13,3 +13,7 @@ class AnonymousBoardService(ABC):
     @abstractmethod
     def list(self):
         pass
+
+    @abstractmethod
+    def read(self, board_id: str):
+        pass
