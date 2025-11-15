@@ -1,0 +1,32 @@
+# Spring Boot / Spring Reactive
+# @RestController / @Controller
+# FastAPI 의 경우 API Router가 Controller 역할 수행
+
+from fastapi import APIRouter
+
+from anonymous_board.controller.request.create_anonymous_board_request import CreateAnonymousBoardRequest
+from anonymous_board.controller.response.anonymous_board_response import AnonymousBoardResponse
+from anonymous_board.service.anonymous_board_service_impl import AnonymousBoardServiceImpl
+
+# @RequestMapping("/board")
+# Controller, Service, Repository 객체 모두 싱글톤 구성
+# Python의 특성상 이러한 IoC, DI 메커니즘이 취약
+# Controller 역할을 하는 Router의 경우 자체적으로 싱글톤 구성을 가짐
+anonymous_board_controller = APIRouter(prefix="/board")
+board_service = AnonymousBoardServiceImpl.getInstance()
+
+@anonymous_board_controller.post("/create",
+                                 response_model=AnonymousBoardResponse)
+def create_anonymous_board(request: CreateAnonymousBoardRequest):
+    # 역할과 책임 관점에서 객체를 분리시키는 것이 더 좋음.
+    # request로 퉁치는 것보다 request_form과 request를 분리시키는 것이 더 좋음.
+    # 웹 페이지에서 요청하는 정보는 여러 도메인 정부를 전부 가지고 있으며, 여러 도메인 정보가 특정 도메인에 기록되는 구성
+    # 따라서 위와 같이 request_form과 request를 분리하여, request에 역할과 책임을 갖게 함.
+    createBoard = board_service.create(request.title, request.content)
+
+    return AnonymousBoardResponse(
+        id=createBoard.id,
+        title=createBoard.title,
+        content=createBoard.content,
+        created_at=createBoard.created_at
+    )
